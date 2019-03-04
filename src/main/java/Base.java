@@ -1,93 +1,126 @@
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Homework test #3
- * run the simple calculator or search for the string with maximum length in an array of a given size
+ * Homework test #4
+ * run the one of the two tasks
+ * 1 - first minimal positive and first maximal negative element of array and change its position,
+ * 2 - generate New Year gift and print its composition
  *
  * @author Sanal Kasaev
  */
 
 public class Base {
+    private static final int SIZE_OF_ARRAY = 10;
+    private static final int ARRAY_ELEMENT_MIN_VALUE = -10;
+    private static final int ARRAY_ELEMENT_MAX_VALUE = 10;
+
+    private static final int SWEETS_MIN_WEIGHT = 10;
+    private static final int SWEETS_MAX_WEIGHT = 500;
+    private static final double SWEETS_MIN_PRICE = 0.01;
+    private static final double SWEETS_MAX_PRICE = 5.00;
+
     public static void main(String[] args) {
-        System.out.println("Homework test #3");
+        System.out.println("Homework test #4");
 
         Scanner scanner = new Scanner(System.in).useLocale(Locale.ENGLISH);
+        ThreadLocalRandom random = ThreadLocalRandom.current();
 
-        System.out.println("Enter number of task: (1 - calculator, 2 - string array)");
+        System.out.println("Enter number of task: \n" +
+                "1 - find first minimal positive and first maximal negative element of array and change its position,\n" +
+                "2 - generate New Year gift and print its composition");
         String taskNumber = scanner.next();
-        if (taskNumber.equals("1")) {
-            System.out.println("Running simple calculator");
-            calculator(scanner);
-        } else {
-            System.out.println("Running search string with max length in array");
-            printStringWithMaxLength(scanner);
+        switch (taskNumber) {
+            case "1":
+                System.out.println("Get random array and Change position of first minimal positive and first maximal negative element in array");
+                int[] intArray;
+                intArray = new int[SIZE_OF_ARRAY];
+                for (int i=0; i< intArray.length; i++) {
+                    intArray[i] = random.nextInt(ARRAY_ELEMENT_MIN_VALUE, ARRAY_ELEMENT_MAX_VALUE + 1);
+                }
+                System.out.println("Array of random integer numbers:");
+                printIntArray(intArray);
+                System.out.println("After changing: ");
+                printIntArray(changePositionOfMinOrMaxElementInArray(intArray));
+                break;
+            case "2":
+                System.out.println("Generate and print a gift for the New Year");
+                List<Sweets> sweetsList = new ArrayList<>();
+                sweetsList.add(new Candy(
+                        random.nextInt(SWEETS_MIN_WEIGHT, SWEETS_MAX_WEIGHT + 1),
+                        Double.parseDouble(String.format(Locale.ENGLISH, "%.2f",
+                                random.nextDouble(SWEETS_MIN_PRICE, SWEETS_MAX_PRICE + 0.01))),
+                        "Chocolate"));
+                sweetsList.add(new Candy(
+                        random.nextInt(SWEETS_MIN_WEIGHT, SWEETS_MAX_WEIGHT + 1),
+                        Double.parseDouble(String.format(Locale.ENGLISH, "%.2f",
+                                random.nextDouble(SWEETS_MIN_PRICE, SWEETS_MAX_PRICE + 0.01))),
+                        "Apple jam"));
+                sweetsList.add(new Donut(
+                        random.nextInt(SWEETS_MIN_WEIGHT, SWEETS_MAX_WEIGHT + 1),
+                        Double.parseDouble(String.format(Locale.ENGLISH, "%.2f",
+                                random.nextDouble(SWEETS_MIN_PRICE, SWEETS_MAX_PRICE + 0.01))),
+                        'L'));
+                sweetsList.add(new JellyBean(
+                        random.nextInt(SWEETS_MIN_WEIGHT, SWEETS_MAX_WEIGHT + 1),
+                        Double.parseDouble(String.format(Locale.ENGLISH, "%.2f",
+                                random.nextDouble(SWEETS_MIN_PRICE, SWEETS_MAX_PRICE + 0.01))),
+                        (byte) random.nextInt(5, 31)));
+                sweetsList.add(new Lollipop(
+                        random.nextInt(SWEETS_MIN_WEIGHT, SWEETS_MAX_WEIGHT + 1),
+                        Double.parseDouble(String.format(Locale.ENGLISH, "%.2f",
+                                random.nextDouble(SWEETS_MIN_PRICE, SWEETS_MAX_PRICE + 0.01))),
+                        "Orange"));
+                Gift gift = new Gift();
+                gift.setSweets(sweetsList);
+                System.out.println("Gift total weight = " + gift.getTotalWeight() + " g");
+                System.out.printf(Locale.ENGLISH, "Gift total price = %.2f $\n", gift.getTotalPrice());
+                System.out.println("Gift composition: ");
+                gift.printGiftComposition();
+                break;
+            default:
+                System.out.println("Wrong task number " + taskNumber);
+                break;
         }
         scanner.close();
     }
 
+
     /**
-     * Print result of 2 numbers addition, subtraction, multiplication or division without input validation
-     *
-     * @param scanner using for read system console input stream
+     * find maximal negative and minimal positive element of integer's array, and change its position
+     * @param ints original array of integer numbers
+     * @return array of integer after changing position
      */
-    private static void calculator(Scanner scanner) {
-        System.out.println("Enter the first number (double): ");
-        double firstNumber = scanner.nextDouble();
-        System.out.println("Enter the second number (double): ");
-        double secondNumber = scanner.nextDouble();
-        System.out.println("Enter operations symbol (+ - * /):");
-        String symbol = scanner.next();
+    private static int[] changePositionOfMinOrMaxElementInArray(int[] ints) {
+        int minPositiveNumber = ARRAY_ELEMENT_MAX_VALUE;
+        int maxNegativeNumber = ARRAY_ELEMENT_MIN_VALUE;
+        int indexOfMinPositiveNumber = 0;
+        int indexOfMaxNegativeNumber = 0;
 
-        double result = 0;
-
-        switch (symbol) {
-            case "+":
-                result = firstNumber + secondNumber;
-                break;
-            case "-":
-                result = firstNumber - secondNumber;
-                break;
-            case "*":
-                result = firstNumber * secondNumber;
-                break;
-            case "/":
-                if (secondNumber == 0) {
-                    System.err.println("Wrong value of the second number");
-                    System.exit(0);
-                }
-                result = firstNumber / secondNumber;
-                break;
-            default:
-                System.err.println("Wrong operations symbol " + symbol);
-                System.exit(0);
+        for (int i=0; i < ints.length; i++) {
+            if (ints[i] < 0 && ints[i] > maxNegativeNumber) {
+                maxNegativeNumber = ints[i];
+                indexOfMaxNegativeNumber = i;
+            } else if (ints[i] > 0 && ints[i] < minPositiveNumber) {
+                minPositiveNumber = ints[i];
+                indexOfMinPositiveNumber = i;
+            }
         }
-        System.out.printf(Locale.ENGLISH,"Result of operation %f %s %f = %.4f", firstNumber, symbol, secondNumber, result);
+        ints[indexOfMaxNegativeNumber] = minPositiveNumber;
+        ints[indexOfMinPositiveNumber] = maxNegativeNumber;
+        return ints;
     }
 
     /**
-     * Print string with maximal length in a array of a given size
-     *
-     * @param scanner using for read system console input stream
+     * print array in format [element1, element2, ..., elementN]
+     * @param array which need to print
      */
-    private static void printStringWithMaxLength(Scanner scanner) {
-        System.out.println("Enter the strings size: ");
-        int arraySize = scanner.nextInt();
-        String[] strings = new String[arraySize];
-
-        for (int i=0; i<arraySize; i++) {
-            System.out.println("Enter " + (i+1) + " element of string array:");
-            strings[i] = scanner.next();
+    private static void printIntArray(int[] array) {
+        System.out.print("[");
+        int size = array.length;
+        for (int i=0; i < size-1; i++) {
+            System.out.print(array[i] + ", ");
         }
-
-        String maxLengthString = "";
-        for (String element : strings) {
-            if (element.length() > maxLengthString.length()) {
-                maxLengthString = element;
-            }
-        }
-
-        System.out.println("String with maximal length is " + maxLengthString
-                + "\nIts length = " + maxLengthString.length());
+        System.out.print(array[size-1] + "]\n");
     }
 }
