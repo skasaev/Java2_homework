@@ -11,7 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 
 public class Base {
-    private static final int SIZE_OF_ARRAY = 10;
+    private static final int SIZE_OF_ARRAY = 20;
     private static final int ARRAY_ELEMENT_MIN_VALUE = -10;
     private static final int ARRAY_ELEMENT_MAX_VALUE = 10;
 
