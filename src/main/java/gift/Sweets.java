@@ -1,3 +1,5 @@
+package gift;
+
 public class Sweets {
     private String name;
     private int weight;

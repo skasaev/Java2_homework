@@ -1,3 +1,5 @@
+import gift.*;
+
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -73,9 +75,9 @@ public class Base {
                         "Orange"));
                 Gift gift = new Gift();
                 gift.setSweets(sweetsList);
-                System.out.println("Gift total weight = " + gift.getTotalWeight() + " g");
-                System.out.printf(Locale.ENGLISH, "Gift total price = %.2f $\n", gift.getTotalPrice());
-                System.out.println("Gift composition: ");
+                System.out.println("gift.Gift total weight = " + gift.getTotalWeight() + " g");
+                System.out.printf(Locale.ENGLISH, "gift.Gift total price = %.2f $\n", gift.getTotalPrice());
+                System.out.println("gift.Gift composition: ");
                 gift.printGiftComposition();
                 break;
             default:
