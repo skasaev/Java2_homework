@@ -1,0 +1,5 @@
+In this tutorial, we’ll discuss different ways of reading a file into an ArrayList.
+
+There are many ways to read a file in Java. Once we read a file, we can perform a lot of operations on the content of that file.
+
+Some of these operations, like sorting, may require processing the entire content of the file into memory. In order to perform such operations, we may need to read the file as an Array or a List of lines or words.

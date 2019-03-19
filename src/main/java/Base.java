@@ -1,7 +1,14 @@
+import calculator_oop.CalcualtorWithOOP;
 import gift.*;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.function.IntBinaryOperator;
+import java.util.stream.Collectors;
 
 /**
  * Homework tests
@@ -29,7 +36,7 @@ public class Base {
     private static final double SWEETS_MIN_PRICE = 0.01;
     private static final double SWEETS_MAX_PRICE = 5.00;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         System.out.println("Homework tests");
         System.out.println("choose one of homework tests\n" +
                 " * 1 - print \"Hello, world\",\n" +
@@ -39,7 +46,8 @@ public class Base {
                 " * 5 - generate gift and print it\n" +
                 " * 6 - run calculator with OOP\n" +
                 " * 7 - run test for Collections\n" +
-                " * 8 - run calculator with try-catch blocks");
+                " * 8 - run calculator with try-catch blocks\n" +
+                " * 9 - run Unit tests");
         Scanner scanner = new Scanner(System.in).useLocale(Locale.ENGLISH);
 
         String taskNumber = scanner.next();
@@ -61,8 +69,29 @@ public class Base {
                 generateGift().printGiftComposition();
                 break;
             case "6":
+                CalcualtorWithOOP.calculate(scanner);
                 break;
             case "7":
+//                String s = "asd фыв\n вава, ва - ав: апа. ФФФ? ава! 99 вавава";
+//                System.out.println(s);
+//                System.out.println(s.replaceAll("[^A-Za-zА-Яа-я_0-9]", " "));
+                List<String> list = new ArrayList<>();
+                try (Scanner s = new Scanner(new FileReader(".\\textFile"))) {
+                    while (s.hasNext()) {
+                        String str = s.next().toLowerCase().replaceAll("[^A-Za-zА-Яа-я_0-9]", "");
+                        list.add(str);
+                    }
+                    System.out.println(list);
+                    System.out.println(list.stream().sorted().collect(Collectors.toList()));
+//                    List<String> listDistinct = list.stream().distinct().collect(Collectors.toList());
+//                    System.out.println(listDistinct);
+                    BinaryOperator<Integer> summ = (a,b) -> a+b;
+                    //HashMap<String, Integer> result =
+                    list.stream().collect(Collectors
+                            .toMap(Function.identity(), i -> 1, summ, HashMap::new)).entrySet().stream()
+                            .sorted(Comparator.comparingInt(Map.Entry::getValue)).forEach(System.out::println);
+                    s.close();
+                }
                 break;
             case "8":
                 break;
