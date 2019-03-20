@@ -1,8 +1,8 @@
 import calculator_oop.CalcualtorWithOOP;
 import gift.*;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BinaryOperator;
@@ -35,7 +35,7 @@ public class Base {
     private static final double SWEETS_MIN_PRICE = 0.01;
     private static final double SWEETS_MAX_PRICE = 5.00;
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
         System.out.println("Homework tests");
         System.out.println("choose one of homework tests\n" +
                 " * 1 - print \"Hello, world\",\n" +
@@ -80,6 +80,9 @@ public class Base {
                         }
                     }
                     s.close();
+                } catch (IOException e) {
+                    System.out.println("Check file 'textFile.txt' in project directory");
+                    e.printStackTrace();
                 }
 
                 //List with words transform to Map, where key is word and value is number of words repetition in text.
