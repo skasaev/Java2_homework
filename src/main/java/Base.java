@@ -7,7 +7,6 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
-import java.util.function.IntBinaryOperator;
 import java.util.stream.Collectors;
 
 /**
@@ -72,28 +71,35 @@ public class Base {
                 CalcualtorWithOOP.calculate(scanner);
                 break;
             case "7":
-//                String s = "asd фыв\n вава, ва - ав: апа. ФФФ? ава! 99 вавава";
-//                System.out.println(s);
-//                System.out.println(s.replaceAll("[^A-Za-zА-Яа-я_0-9]", " "));
                 List<String> list = new ArrayList<>();
                 try (Scanner s = new Scanner(new FileReader(".\\textFile"))) {
                     while (s.hasNext()) {
                         String str = s.next().toLowerCase().replaceAll("[^A-Za-zА-Яа-я_0-9]", "");
-                        list.add(str);
+                        if (!str.isEmpty()) {
+                            list.add(str);
+                        }
                     }
-                    System.out.println(list);
-                    System.out.println(list.stream().sorted().collect(Collectors.toList()));
-//                    List<String> listDistinct = list.stream().distinct().collect(Collectors.toList());
-//                    System.out.println(listDistinct);
-                    BinaryOperator<Integer> summ = (a,b) -> a+b;
-                    //HashMap<String, Integer> result =
-                    list.stream().collect(Collectors
-                            .toMap(Function.identity(), i -> 1, summ, HashMap::new)).entrySet().stream()
-                            .sorted(Comparator.comparingInt(Map.Entry::getValue)).forEach(System.out::println);
                     s.close();
                 }
+
+                //List with words transform to Map, where key is word and value is number of words repetition in text.
+                // Using TreeMap for sorting maps element by keys
+                BinaryOperator<Integer> summ = (a,b) -> a+b; // merge function for calculate number of repetitions
+                TreeMap<String, Integer> result = list.stream()
+                        .collect(Collectors.toMap(Function.identity(), i -> 1, summ, TreeMap::new));
+
+                System.out.println("Words sorted list:");
+                result.entrySet().forEach(System.out::println);
+                //print element of maps entrySet with maximal value
+                System.out.println("Word with max repetitions ["
+                        + result.entrySet().stream()
+                        .max(Comparator.comparingInt(Map.Entry::getValue))
+                        .orElseThrow(() -> new AssertionError("Did not find word with the maximum number of repetitions in the text"))
+                        + "]");
                 break;
             case "8":
+                break;
+            case "9":
                 break;
             default:
                 System.out.println("Wrong task number " + taskNumber);
@@ -102,6 +108,10 @@ public class Base {
         scanner.close();
     }
 
+    /**
+     * generate instance of Gift class with hardcode parameters
+     * @return gift
+     */
     private static Gift generateGift() {
         System.out.println("Generate and print a gift for the New Year");
         ThreadLocalRandom random = ThreadLocalRandom.current();
@@ -141,6 +151,10 @@ public class Base {
         return gift;
     }
 
+    /**
+     * generate array with random integer numbers and print it.
+     * find positions of first minimal positive and first maximal negative elements and rearrange its.
+     */
     private static void  getArrayAndChangePosition() {
         System.out.println("Get random array and Change position of first minimal positive and first maximal negative element in array");
         ThreadLocalRandom random = ThreadLocalRandom.current();

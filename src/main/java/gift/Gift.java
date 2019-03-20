@@ -1,16 +1,9 @@
 package gift;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Gift {
-    private static final int SWEETS_MIN_WEIGHT = 10;
-    private static final int SWEETS_MAX_WEIGHT = 500;
-    private static final double SWEETS_MIN_PRICE = 0.01;
-    private static final double SWEETS_MAX_PRICE = 5.00;
-
     private List<Sweets> sweets;
 
     public List<Sweets> getSweets() {
