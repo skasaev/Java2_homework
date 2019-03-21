@@ -1,22 +1,32 @@
 package calculator_oop;
 
+import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
 
 public class CalcualtorWithOOP {
 
     /**
-     * Print result of 2 numbers addition, subtraction, multiplication or division without input validation
+     * Print result of 2 numbers addition, subtraction, multiplication or division
      *
      * @param scanner using for read system console input stream
      */
-    public static void calculate(Scanner scanner) {
-        System.out.println("Enter the first number (double): ");
-        double firstNumber = scanner.nextDouble();
-        System.out.println("Enter the second number (double): ");
-        double secondNumber = scanner.nextDouble();
+    public static void calculate(Scanner scanner) throws DivisionByZeroException {
+        double firstNumber = 0;
+        double secondNumber = 0;
+        String symbol;
+        try {
+            System.out.println("Enter the first number (double): ");
+            firstNumber = scanner.nextDouble();
+            System.out.println("Enter the second number (double): ");
+            secondNumber = scanner.nextDouble();
+        } catch (InputMismatchException e) {
+            System.err.println("You should enter only numbers");
+            System.exit(0);
+        }
+
         System.out.println("Enter operations symbol (+ - * /):");
-        String symbol = scanner.next();
+        symbol = scanner.next();
 
         double result = 0;
         switch (symbol) {
@@ -33,12 +43,13 @@ public class CalcualtorWithOOP {
                 result = mult.execute(firstNumber, secondNumber);
                 break;
             case "/":
-                if (secondNumber == 0) {
-                    System.err.println("Wrong value of the second number");
+                try {
+                    Division div = new Division();
+                    result = div.execute(firstNumber, secondNumber);
+                } catch (DivisionByZeroException e) {
+                    System.err.println("Catch " + e.getClass().getName() +" with message: " + e.getMessage());
                     System.exit(0);
                 }
-                Division div = new Division();
-                result = div.execute(firstNumber, secondNumber);
                 break;
             default:
                 System.err.println("Wrong operations symbol " + symbol);

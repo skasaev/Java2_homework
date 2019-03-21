@@ -1,4 +1,5 @@
 import calculator_oop.CalcualtorWithOOP;
+import calculator_oop.DivisionByZeroException;
 import gift.*;
 
 import java.io.FileReader;
@@ -35,7 +36,7 @@ public class Base {
     private static final double SWEETS_MIN_PRICE = 0.01;
     private static final double SWEETS_MAX_PRICE = 5.00;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DivisionByZeroException {
         System.out.println("Homework tests");
         System.out.println("choose one of homework tests\n" +
                 " * 1 - print \"Hello, world\",\n" +
@@ -43,10 +44,8 @@ public class Base {
                 " * 3 - search string with max length in array\n" +
                 " * 4 - change position of elements in array\n" +
                 " * 5 - generate gift and print it\n" +
-                " * 6 - run calculator with OOP\n" +
-                " * 7 - run test for Collections\n" +
-                " * 8 - run calculator with try-catch blocks\n" +
-                " * 9 - run Unit tests");
+                " * 6 - run calculator with OOP and try-catch blocks\n" +
+                " * 7 - run test for Collections");
         Scanner scanner = new Scanner(System.in).useLocale(Locale.ENGLISH);
 
         String taskNumber = scanner.next();
@@ -99,10 +98,6 @@ public class Base {
                         .max(Comparator.comparingInt(Map.Entry::getValue))
                         .orElseThrow(() -> new AssertionError("Did not find word with the maximum number of repetitions in the text"))
                         + "]");
-                break;
-            case "8":
-                break;
-            case "9":
                 break;
             default:
                 System.out.println("Wrong task number " + taskNumber);
